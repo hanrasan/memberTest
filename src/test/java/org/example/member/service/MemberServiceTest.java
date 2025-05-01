@@ -38,4 +38,18 @@ public class MemberServiceTest {
 
         assertTrue(passwordEncoder.matches(request.getPassword(), member.getPassword()));
     }
+
+    @Test
+    void signUp_fail_duplicate() {
+        SignUpRequest request1 = new SignUpRequest("",
+                                                   "password1",
+                                                  "duplicate");
+        memberService.signUp(request1);
+
+        SignUpRequest request2 = new SignUpRequest("",
+                                           "password2",
+                                              "duplicate");
+
+        assertThrows(IllegalArgumentException.class, () -> memberService.signUp(request2));
+    }
 }

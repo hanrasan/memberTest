@@ -20,6 +20,11 @@ public class MemberService {
 
     @Transactional
     public Long signUp(SignUpRequest request) {
+
+        if (memberRepository.findByName(request.getName()).isPresent()) {
+            throw new IllegalArgumentException("Username is already in use");
+        }
+
         String encodedPassword = passwordEncoder.encode(request.getPassword());
 
         Member member = new Member(request.getEmail(),
